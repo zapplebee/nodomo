@@ -1,37 +1,42 @@
 #!/usr/bin/env node
 const child_process = require("child_process");
-const path = require("path");
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+function notifiy({ title, message }) {
+  const command = `osascript -e 'display notification "${message}" with title "Nodomo" subtitle "${title}"'`;
+  console.log(JSON.stringify({ title, message }));
+  child_process.execSync(command);
+}
+
 async function loop() {
-  play();
-  console.log("20 minutes");
+  workSound();
+  notifiy({ title: "Work session", message: "20 minutes" });
 
   await delay(1000 * 60 * 20);
-  play();
-  console.log("3 minutes  (break)");
+  breakSound();
+  notifiy({ title: "Short Break", message: "3 minutes" });
   await delay(1000 * 60 * 3);
 
-  play();
-  console.log("20 minutes");
+  workSound();
+  notifiy({ title: "Work session", message: "20 minutes" });
   await delay(1000 * 60 * 20);
-  play();
-  console.log("3 minutes  (break)");
+  breakSound();
+  notifiy({ title: "Short Break", message: "3 minutes" });
   await delay(1000 * 60 * 3);
 
-  play();
-  console.log("20 minutes");
+  workSound();
+  notifiy({ title: "Work session", message: "20 minutes" });
   await delay(1000 * 60 * 20);
-  play();
-  console.log("3 minutes  (break)");
+  breakSound();
+  notifiy({ title: "Short Break", message: "3 minutes" });
   await delay(1000 * 60 * 3);
 
-  play();
-  console.log("20 minutes");
+  workSound();
+  notifiy({ title: "Work session", message: "20 minutes" });
   await delay(1000 * 60 * 20);
-  play();
-  console.log("30 minutes (break)");
+  breakSound();
+  notifiy({ title: "LONG Break", message: "30 minutes" });
   await delay(1000 * 60 * 30);
 }
 
@@ -61,10 +66,17 @@ function chime(freq, duration) {
   );
 }
 
-function play() {
+function workSound() {
   chime(NOTES.C, 0.1);
   chime(NOTES.A, 0.1);
   chime(NOTES.D, 0.1);
+}
+
+function breakSound() {
+  chime(NOTES.C * 2, 0.1);
+  chime(NOTES.C * 2, 0.1);
+  chime(NOTES.A * 2, 0.1);
+  chime(NOTES.D * 2, 0.1);
 }
 
 async function main() {
